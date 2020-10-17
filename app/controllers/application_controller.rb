@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
       end
     end
     if unauthorized
+      Rails.logger.error("NOt Authenticated")
       render :json => {:message => "Not Authorized!"}, :status => :unauthorized
       return
     end
