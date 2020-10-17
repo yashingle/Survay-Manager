@@ -1,0 +1,10 @@
+body {
+  height: 100%;
+  position: relative;
+}
+.sign-in-container {
+  height: 100%;
+}
+.delete-user {
+  cursor: pointer;
+}

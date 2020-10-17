@@ -1,0 +1,17 @@
+ <form action="/survay" method="POST" id="save-survay-form">
+  <input type="text" class="form-control border-1 bg-light small" id="survay-name" required placeholder="Survay Name">
+  <br>
+  <select class="form-control mb-3" id='survay-points'>
+    <option value="0">Total Points in ratings</option>
+    <%# <option value="5">5</option> %>
+    <option value="10">10</option>
+  </select>
+  <textarea type="text" required class="form-control bg-light border-1 small" placeholder="Survay details" aria-label="Search" id="survay-detail" aria-describedby="basic-addon2" ></textarea>
+  <br>
+  <input type="submit" class="form-control border-1 bg-primary small" style="color: white;" value="Survay Name">
+</form><br><br>
+<div class="alert alert-error bg-danger" id="new-survay-alert">
+  <span>
+    Something went wrong!!
+  </span>
+</div>

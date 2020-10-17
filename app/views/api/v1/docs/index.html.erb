@@ -1,0 +1,90 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <nav id="navbar">
+        <ul class="nav flex-column">
+          <header>SSurvay Documentation</header>
+          <li class="nav-item">
+            <a class="nav-link introduction" href="#Introduction">Introduction</a>
+          </li>
+          <li class="nav-item">
+           <a class="nav-link layout" href="#temporary-key">Temporary key</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link content" href="#save-response">Save Response</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link components" href="#integrate-key">Js Framework</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-md-9">
+      <main id="main-doc">    
+        <div class="head-box">
+          <h1>SSURVAY</h1>
+        </div>
+        <section class="main-section" id="Introduction">
+          <header><h2>Introduction</h2></header>
+          <article>
+            <p>Use Ssurvay app to save your product response. This will help you to get your product feedback.</p>
+          </article>
+        </section>
+        <section class="main-section" id="Layout">
+          <%# <header><h2>Saving Response</h2></header> %>
+          <article>
+            <h3 id="temporary-key">Temporary Api Key</h3>
+            <p>Copy Api token from profile page and use this token to get one time use token</p>
+            <pre>
+              <code>
+                <%= @api_token %></code>
+            </pre>
+            <p>Get temporary token for one time use</p> 
+            <pre>
+              <code>
+              <b>~$</b> curl --location --request GET 'http://localhost:3000/api/v1/one_time_api_key' \
+                        &nbsp;&nbsp;&nbsp;--header 'Authorization: Bearer <%= @api_token %>'
+              <b>~$</b> {"one_time_api_token":"RgFGYnyi4GMSJsfvsVX-"}</code>
+            </pre>
+            <h3 id="save-response">Save response</h3> 
+            <pre>
+              <code>
+              <b>~$</b> curl 'http://localhost:3000/api/v1/survay_response' \
+                        &nbsp;&nbsp;&nbsp;-H 'Accept: application/json' \
+                        &nbsp;&nbsp;&nbsp;-H 'Authorization: Basic RgFGYnyi4GMSJsfvsVX-' \
+                        &nbsp;&nbsp;&nbsp;-H 'Content-type: application/json' \
+                        &nbsp;&nbsp;&nbsp;--data-binary '{"points":8,"response":"New Answer","survay_id":6,"additional_info":{"user_id":"some_id"}}' \
+                        &nbsp;&nbsp;&nbsp;--compressed
+              <b>~$</b> {"message":"Response Saved"}</code>
+            </pre>
+            
+            <hr>
+            <h3 id="integrate-key">Integrate Js framework</h3>
+            <p>If you want to use ssurvay framework to save response </p>
+            <pre>
+              <code>
+                &lt;script src='https://github.com/nkkumawat/Survay-manager/blob/master/index.js'&gt;&lt;/script&gt;
+                &lt;script&gt;
+                  &nbsp;&nbsp;var s = new Ssurvay({
+                  &nbsp;&nbsp;&nbsp;&nbsp;apiKey: "RgFGYnyi4GMSJsfvsVX",
+                  &nbsp;&nbsp;&nbsp;&nbsp;survayId: 6,
+                  &nbsp;&nbsp;&nbsp;&nbsp;host: "http://localhost:3000",
+                  &nbsp;&nbsp;&nbsp;&nbsp;placeholder: "What you think about this product",
+                  &nbsp;&nbsp;&nbsp;&nbsp;additionalInfo: {
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user_id: "some_id",
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;some_data: "some_data"
+                  &nbsp;&nbsp;}
+                  &nbsp;&nbsp;});
+                  &nbsp;&nbsp;s.drawSurvay();
+                &lt;/script&gt;
+              </code>
+            </pre>
+            <h3>Result</h3>
+
+            <img src="/img/frame.gif">
+          </article>    
+        </section>
+      </main>   
+    </div>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+<div class="container-fluid" id="container-wrapper">
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Survay Responses</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/home">Home</a>
+      </li>
+      <li class="breadcrumb-item">Survay Responses</li>
+    </ol>
+  </div>
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Survay Responses</h6>
+        </div>
+        <div class="card-body">
+          <% if @survay_responses.present? %>
+            <% @survay_responses.each do |survay_response| %>
+              <div class="alert alert-primary pointer " role="alert"   >
+                <div class="row"  >
+                  <div class="col-sm-11 go-to-survay" data-survay-id="<%= survay_response.survay_id%>">
+                    <small class="float-right"><%=survay_response.created_at.strftime("%B-%d-%Y")%></small>
+                    <%= survay_response.response.present? ? survay_response.response : "No Response" %><br>
+                    <small><b>Rating</b>: <%= "#{survay_response.points} / #{survay_response.survay.total_points}" %></small><hr>
+                    <%# <b>Additional Info</b>:<br> %>
+                    <%if survay_response.additional_info.present?%>
+                      <%survay_response.additional_info.each do |k, v|%>
+                        <small><b><%=k%> = </b><%=v%></small><br>
+                      <%end%>
+                    <%end%>
+                  </div>
+                  <div class="col-sm-1">
+                    <a type="button" class=" mb-1 float-right survay-response-delete" data-survay-response-id="<%= survay_response.id %>"  ><i class="far fa fa-times" aria-hidden="true"></i></a>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+            <div class="card-footer text-center">
+              <% if @offset > 1%>
+                <a class="m-0 small text-primary card-link" href="/home/survay-response?page-index=<%= @offset-1 > 0 ? @offset-1 : @offset %>"><i class="fas fa-chevron-left"></i> Go Back </a>
+              <% end %>
+              <% if @offset > 1 &&  @survay_responses.count == 10%> | <% end %>
+              <% if  @survay_responses.count == 10 %>
+                 <a class="m-0 small text-primary card-link" href="/home/survay-response?page-index=<%= @offset+1%>">View More <i class="fas fa-chevron-right"></i></a>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="card-footer text-center">
+              <p class="m-0 small text-primary card-link" >No more records</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">New Survays</h6>
+        </div>
+        <div class="card-body">
+          <%= render :partial => "/layouts/survay_form"%>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Logout -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to logout?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+          <a href="login.html" class="btn btn-primary">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

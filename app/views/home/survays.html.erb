@@ -1,0 +1,64 @@
+<div class="container-fluid" id="container-wrapper">
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Survay</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="./">Home</a>
+      </li>
+      <li class="breadcrumb-item">Survay</li>
+    </ol>
+  </div>
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Survay</h6>
+        </div>
+        <div class="card-body">
+          <% if @survays.present? %>
+            <% @survays.each do |survay| %>
+              <div class="alert alert-primary" role="alert">
+                <div class="row">
+                  <div class="col-sm-11 go-to-survay" data-survay-id="<%= survay.id%>">
+                    <small class="float-right"><%=survay.created_at.strftime("%B-%d-%Y")%></small> 
+                    <h4><%= survay.title %></h4>
+                    <%= survay.detail %><br>
+                    <small><b>Total responses</b>: <%= survay.survay_responses.count %> </small>
+                    <%
+                      given_points = 0
+                      survay.survay_responses.each{|sr| given_points += sr.points}
+                    %> 
+                    <small class="float-right"><b>Ratings</b>: <%=given_points/survay.survay_responses.count rescue 0%> </small> 
+                  </div>
+                  <div class="col-sm-1">
+                    <a type="button" class="mb-1 float-right survay-delete" data-survay-id="<%= survay.id %>"  ><i class="far fa fa-times" aria-hidden="true"></i></a>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+            <% if @survays.count == 10 %>
+            <div class="card-footer text-center">
+              <a class="m-0 small text-primary card-link" href="/home/survays?page-index=<%= @offset-1 > 0 ? @offset-1 : @offset %>"><i class="fas fa-chevron-left"></i> Go Back </a>
+              | <a class="m-0 small text-primary card-link" href="/home/survays?page-index=<%= @offset+1%>">View More <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <% end %>
+          <% else %>
+            <div class="card-footer text-center">
+              <p class="m-0 small text-primary card-link" >No more records</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">New Survays</h6>
+        </div>
+        <div class="card-body">
+          <%= render :partial => "/layouts/survay_form"%>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
