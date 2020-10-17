@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ssurvay</title>
+  <%= csrf_meta_tags %>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= render :partial => '/layouts/home_css_assets'%>
+  <link href="/css/docs.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+  <div id="wrapper">
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <%= render :partial => '/layouts/navbar'%>
+        <!-- Container Fluid-->
+        <%= yield %>
+        <!---Container Fluid-->
+      </div>
+      <!-- Footer -->
+        <%= render :partial => '/layouts/logout_modal'%>
+        <%= render :partial => '/layouts/footer'%>
+      <!-- Footer -->
+    </div>
+  </div>
+  <!-- Scroll to top -->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+  <%= render :file => 'layouts/_home_js_assets'%>
+</body>
+
+</html>

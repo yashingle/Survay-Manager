@@ -1,0 +1,83 @@
+<div class="container-fluid" id="container-wrapper">
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Survay</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="./">Home</a>
+      </li>
+      <li class="breadcrumb-item">Survay</li>
+    </ol>
+  </div>
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Survay</h6>
+        </div>
+        <div class="card-body">
+          <% if @survay.present? %>
+            <% @survay_responses = @survay.survay_responses[(@offset-1)*10..(@offset-1)*10+10-1]%>
+            <% if @survay_responses.present? %>
+              <% @survay_responses.each do |survay_response| %>
+                <div class="alert alert-primary" role="alert">
+                  <div class="row">
+                    <div class="col-sm-11 go-to-survay" data-survay-id="<%= survay_response.survay_id%>">
+                      <small class="float-right"><%=survay_response.created_at.strftime("%B-%d-%Y")%></small>
+                      <%= survay_response.response.present? ? survay_response.response : "No Response" %><br>
+                      <small><b>Rating</b>: <%= "#{survay_response.points} / #{survay_response.survay.total_points}" %></small><hr>
+                      <%if survay_response.additional_info.present?%>
+                        <%survay_response.additional_info.each do |k, v|%>
+                          <small><b><%=k%>: </b><%=v%></small><br>
+                        <%end%>
+                      <%end%>
+                    </div>
+                    <div class="col-sm-1">
+                      <a type="button" class=" mb-1 float-right survay-response-delete" data-survay-response-id="<%= survay_response.id %>"  ><i class="far fa fa-times" aria-hidden="true"></i></a>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+              <div class="card-footer text-center">
+              <% if @offset > 1%>
+                <a class="m-0 small text-primary card-link" href="/home/survay/<%=@survay.try!(:id)%>?page-index=<%= @offset-1 > 0 ? @offset-1 : @offset %>"><i class="fas fa-chevron-left"></i> Go Back </a>
+              <% end %>
+              <% if @offset > 1 &&  @survay_responses.count == 10%> | <% end %>
+              <% if  @survay_responses.count == 10 %>
+                 <a class="m-0 small text-primary card-link" href="/home/survay/<%=@survay.try!(:id)%>?page-index=<%= @offset+1%>">View More <i class="fas fa-chevron-right"></i></a>
+              <% end %>
+              </div>
+            <% else %>
+              <div class="card-footer text-center">
+                <p class="m-0 small text-primary card-link" >No more records</p>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Survay Details</h6>
+        </div>
+        <div class="card-body">
+        <% if @survay.present? %>
+          <h5><%=@survay.try!(:title)%></h5>
+          <p><%=@survay.try!(:detail)%></p>
+          <hr>
+          <small>Total responses: <%=@survay.try!(:survay_responses).try!(:count) || 0%></small><br/>
+          <%
+            survay_responses = @survay.try!(:survay_responses)
+            total_count = survay_responses.count
+            rating_count = 0
+            survay_responses.select{|sr| rating_count += sr.points}
+            survay_score = (rating_count.to_f/total_count).round(2) 
+            survay_score = 0 if survay_score.nan?
+          %>
+          <small>Rating: <%=survay_score%></small>
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
